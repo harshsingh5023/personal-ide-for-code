@@ -161,7 +161,7 @@ const RightPane = () => {
 
       {Object.entries(Folders).map(
         ([folderId, folder]: [folderId: string, folder: any]) => (
-          <Folder>
+          <Folder key={folderId}>
             <Header variant='folder'>
               <Heading size='small'>{folder.title}</Heading>
               <FolderButtons>
@@ -205,7 +205,7 @@ const RightPane = () => {
             <CardContainer>
               {Object.entries(folder.items).map(
                 ([cardId, card]: [cardId: string, card: any]) => (
-                  <PlaygroundCard
+                  <PlaygroundCard key={cardId}
                     onClick={() => {
                       // navigate to playground page
                       navigate(`/code/${folderId}/${cardId}`);
