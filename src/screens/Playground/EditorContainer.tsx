@@ -71,7 +71,7 @@ const ButtonGroup = styled.div`
 const RunCode = styled.button`
   padding: 0.8rem 2rem;
   background-color: #0097d7 !important;
-  color: white;
+  color: white !important;
   font-weight: 700;
   border-radius: 2rem;
 `;
