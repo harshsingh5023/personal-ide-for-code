@@ -6,13 +6,16 @@ import Playground from "./screens/Playground";
 import GlobalStyles from "./styles/globals";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Page404 from "./screens/Page404";
-
+import DarkLightMode from "./components/DarkLightMode";
+import { ThemeContextProvider } from "./context/ThemeContext";
 
 function App() {
   return (
+    <ThemeContextProvider>
     <PlaygroundProvider>
       <ModalProvider>
         <GlobalStyles />
+            <DarkLightMode/>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<HomeScreen />} />
@@ -28,6 +31,7 @@ function App() {
         </BrowserRouter>
       </ModalProvider>
     </PlaygroundProvider>
+    </ThemeContextProvider>
   );
 }
 

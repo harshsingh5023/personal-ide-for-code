@@ -4,6 +4,7 @@ import { PlaygroundContext } from "../../context/PlaygroundContext";
 import { CloseButton, Header, Input, ModalProps } from "../Modal";
 import Select from "react-select";
 import styled from "styled-components";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const InputWithSelect = styled.div`
   display: grid;
@@ -16,6 +17,8 @@ const InputWithSelect = styled.div`
   input {
     flex-grow: 1;
     height: 2rem;
+    color: inherit;
+    background: inherit;
   }
 
   button {
@@ -28,6 +31,7 @@ const InputWithSelect = styled.div`
 
 const NewCard = ({ closeModal, identifer }: ModalProps) => {
   const { folderId } = identifer;
+  const {darkMode} = useContext(ThemeContext)!;
 
   // access our card from folders state
   const { folders, createNewPlayground } = useContext(PlaygroundContext)!;
@@ -45,6 +49,35 @@ const NewCard = ({ closeModal, identifer }: ModalProps) => {
   const handleLanguageChange = (selectedOption: any) => {
     setLanguage(selectedOption);
   };
+
+  const customStyles = {
+    option: (provided:any, state:any) => ({
+      ...provided,
+      background:    state.isFocused ? '#91afd9' : '',
+      color:   darkMode ? (state.isSelected ? 'black' : 'white') : (state.isSelected ? 'white' : 'black'),
+    }),
+    control : (provided:any, state:any) => ({
+      ...provided,
+      background:   'transparent',
+    })
+    ,
+    menu : (provided:any, state:any) => ({
+      ...provided,
+      background:   'transparent',
+    })
+    ,
+    menuList : (provided:any, state:any) => ({
+      ...provided,
+      background:   darkMode ? '#313131' : 'white',
+      borderRadius: '1.5px',
+    })
+    ,
+    singleValue: (provided:any, state:any) => {
+      
+      const color = darkMode ? 'white' : 'black';
+      return { ...provided, color };
+    }
+  }
 
   return (
     <div>
@@ -67,6 +100,7 @@ const NewCard = ({ closeModal, identifer }: ModalProps) => {
           }}
         />
         <Select
+        styles={customStyles}
           options={languageOptions}
           value={language}
           onChange={handleLanguageChange}

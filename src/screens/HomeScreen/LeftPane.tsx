@@ -71,7 +71,7 @@ const LeftPane = () => {
       <ContentContainer>
         <Logo src='/logo.png' alt='' />
         <MainHeading>
-          <span>Code</span> Deck
+          <span>My</span> Code
         </MainHeading>
         <SubHeading>Code. Compile. Debug.</SubHeading>
         <AddNewButton

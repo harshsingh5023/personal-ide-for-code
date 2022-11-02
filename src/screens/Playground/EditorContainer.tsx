@@ -5,6 +5,7 @@ import CodeEditor from "./CodeEditor";
 import Select from "react-select";
 import { ModalContext } from "../../context/ModalContext";
 import { languageMap } from "../../context/PlaygroundContext";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const StyledEditorContainer = styled.div`
   display: flex;
@@ -12,9 +13,7 @@ const StyledEditorContainer = styled.div`
 `;
 
 const UpperToolbar = styled.div`
-  background: white;
   height: 4rem;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,9 +38,7 @@ const Title = styled.div`
 `;
 
 const LowerToolbar = styled.div`
-  background: white;
   height: 4rem;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,10 +48,10 @@ const LowerToolbar = styled.div`
   label {
     background: transparent;
     outline: 0;
+    color: inherit;
     border: 0;
     font-size: 1.15rem;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -198,6 +195,62 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
     });
   }
 
+  const { darkMode } = useContext(ThemeContext)!;
+
+  // Fullscreen function
+  const fullScreenOn = () => {
+    if (!document.fullscreenElement) {
+      document.body.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  // Export Code
+  const exportCode = () => {
+    var file = new Blob([currentCode], { type: "text/plain" });
+    var a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "Code.txt";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
+  };
+
+  const customStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      background: state.isFocused ? "#91afd9" : "",
+      color: darkMode
+        ? state.isSelected
+          ? "black"
+          : "white"
+        : state.isSelected
+        ? "white"
+        : "black",
+    }),
+    control: (provided: any, state: any) => ({
+      ...provided,
+      background: "transparent",
+    }),
+    menu: (provided: any, state: any) => ({
+      ...provided,
+      background: "transparent",
+    }),
+    menuList: (provided: any, state: any) => ({
+      ...provided,
+      background: darkMode ? "#313131" : "white",
+      borderRadius: "1.5px",
+    }),
+    singleValue: (provided: any, state: any) => {
+      const color = darkMode ? "white" : "black";
+      return { ...provided, color };
+    },
+  };
   return (
     <StyledEditorContainer>
       {/* Upper Toolbar Begins */}
@@ -205,6 +258,7 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
         <Title>
           <h3>{title}</h3>
           <button
+            style={{ color: "inherit" }}
             onClick={() => {
               // open a modal
               // to edit card title
@@ -230,11 +284,13 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
             Save Code
           </SaveCode>
           <Select
+            styles={customStyles}
             value={selectedLanguage}
             options={languageOptions}
             onChange={handleChangeLanguage}
           />
           <Select
+            styles={customStyles}
             value={selectedTheme}
             options={themeOptions}
             onChange={handleChangeTheme}
@@ -255,14 +311,14 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
       {/* Lower Toolbar Begins */}
       <LowerToolbar>
         <ButtonGroup>
-          {/* <button>
+          <button onClick={fullScreenOn}>
             <BiFullscreen />
             Full Screen
-          </button> */}
+          </button>
           <label>
             <input
-              type='file'
-              accept='.txt'
+              type="file"
+              accept=".txt"
               style={{ display: "none" }}
               onChange={(e) => {
                 getFile(e);
@@ -270,10 +326,10 @@ const EditorContainer: React.FC<EditorContainerProps> = ({
             />
             <BiImport /> Import Code
           </label>
-          {/* <button>
+          <button onClick={exportCode}>
             <BiExport />
             Export Code
-          </button> */}
+          </button>
         </ButtonGroup>
         <RunCode
           onClick={() => {

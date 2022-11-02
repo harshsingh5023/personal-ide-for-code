@@ -13,11 +13,18 @@ import { ModalContext } from "../../context/ModalContext";
 import Modal from "../../components/Modal";
 import { Buffer } from "buffer";
 import axios from "axios";
+import { ModeProps, ThemeContext } from "../../context/ThemeContext";
 
-const MainApp = styled.div`
-  display: grid;
+const MainApp = styled.div<ModeProps>`
+min-width:1080px;
+box-sizing: border-box;  
+display: grid;
   grid-template-columns: 2fr 1fr;
   height: calc(100vh - 4.5rem);
+  background: ${(props) => props.mode === "Light" ? "#fafafa" : "#313131"} ;
+  color: ${(props) => props.mode === "Light" ?  "Black" : "#fafafa"} ;
+  transition: color 0.3s ease-in;
+  transition: background 0.25s ease;
 `;
 
 const Consoles = styled.div`
@@ -158,10 +165,12 @@ const Playground = () => {
     closeModal();
   };
 
+  const {darkMode} = useContext(ThemeContext)!;
+
   return (
     <div>
       <Navbar />
-      <MainApp>
+      <MainApp mode={darkMode ? "Dark" : "Light"}>
         <EditorContainer
           title={title}
           currentLanguage={currentLanguage}
@@ -178,7 +187,9 @@ const Playground = () => {
             currentInput={currentInput}
             setCurrentInput={setCurrentInput}
           />
-          <OutputConsole currentOutput={currentOutput} />
+          <OutputConsole
+          
+          currentOutput={currentOutput} />
         </Consoles>
       </MainApp>
       {isOpen.value === true ? <Modal /> : <></>}

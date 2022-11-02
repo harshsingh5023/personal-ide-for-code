@@ -4,6 +4,7 @@ import { PlaygroundContext } from "../../context/PlaygroundContext";
 import { CloseButton, Header, Input, ModalProps } from "../Modal";
 import Select from "react-select";
 import styled from "styled-components";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const InputWithSelect = styled.div`
   display: grid;
@@ -15,6 +16,8 @@ const InputWithSelect = styled.div`
   input {
     flex-grow: 1;
     height: 2rem;
+    color:inherit;
+    background:inherit;
   }
   button {
     background: #241f21;
@@ -27,6 +30,37 @@ const InputWithSelect = styled.div`
 const NewFolderAndPlayground = ({ closeModal, identifer }: ModalProps) => {
   // access our card from folders state
   const { createNewFolderAndPlayground } = useContext(PlaygroundContext)!;
+
+  const {darkMode} = useContext(ThemeContext)!;
+
+  const customStyles = {
+    option: (provided:any, state:any) => ({
+      ...provided,
+      background:    state.isFocused ? '#91afd9' : '',
+      color:   darkMode ? (state.isSelected ? 'black' : 'white') : (state.isSelected ? 'white' : 'black'),
+    }),
+    control : (provided:any, state:any) => ({
+      ...provided,
+      background:   'transparent',
+    })
+    ,
+    menu : (provided:any, state:any) => ({
+      ...provided,
+      background:   'transparent',
+    })
+    ,
+    menuList : (provided:any, state:any) => ({
+      ...provided,
+      background:   darkMode ? '#313131' : 'white',
+      borderRadius: '1.5px',
+    })
+    ,
+    singleValue: (provided:any, state:any) => {
+      
+      const color = darkMode ? 'white' : 'black';
+      return { ...provided, color };
+    }
+  }
 
   const languageOptions = [
     { value: "c++", label: "C++" },
@@ -75,6 +109,7 @@ const NewFolderAndPlayground = ({ closeModal, identifer }: ModalProps) => {
         />
 
         <Select
+        styles={customStyles}
           options={languageOptions}
           value={language}
           onChange={handleLanguageChange}

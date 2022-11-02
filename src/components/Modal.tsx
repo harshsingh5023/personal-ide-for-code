@@ -1,14 +1,13 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { RiCloseFill } from "react-icons/ri";
 import { ModalContext } from "../context/ModalContext";
-import { PlaygroundContext } from "../context/PlaygroundContext";
 import EditCardTitle from "./modalTypes/EditCardTitle";
 import EditFolderTitle from "./modalTypes/EditFolderTitle";
 import NewCard from "./modalTypes/NewCard";
 import NewFolder from "./modalTypes/NewFolder";
 import NewFolderAndPlayground from "./modalTypes/NewFolderAndPlayground";
 import Loading from "./modalTypes/Loading";
+import { ModeProps, ThemeContext } from "../context/ThemeContext";
 
 const ModalContainer = styled.div`
   background: rgba(0, 0, 0, 0.4);
@@ -21,14 +20,16 @@ const ModalContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ModalContent = styled.div`
-  background: white;
+  `;
+  
+  const ModalContent = styled.div<ModeProps>`
+  background: ${(props) => props.mode === "Light" ? "#fafafa" : "#313131"} ;
+  color: ${(props) => props.mode === "Light" ?  "Black" : "#fafafa"} ;
   width: 35%;
   padding: 2rem;
   border-radius: 10px;
-`;
+  transition: all 1s ease-in;
+  `;
 
 export const Header = styled.div`
   display: flex;
@@ -54,6 +55,8 @@ export const Input = styled.div`
   input {
     flex-grow: 1;
     height: 2rem;
+    color: inherit;
+    background: inherit;
   }
   button {
     background: #241f21;
@@ -82,10 +85,10 @@ const Modal = () => {
   // 3 -> newCard
   // 4 -> newFolder
   // 5 -> newFolderAndPlayground
-
+const {darkMode} = useContext(ThemeContext)!;
   return (
     <ModalContainer>
-      <ModalContent>
+      <ModalContent mode={darkMode ? "Dark" : "Light"}>
         {isOpen.type === "1" && (
           <EditCardTitle closeModal={closeModal} identifer={isOpen.identifer} />
         )}

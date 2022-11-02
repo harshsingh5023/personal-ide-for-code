@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const NavbarContainer = styled.div`
+min-width: 1080px;
   height: 4.5rem;
   background: #241f21;
   display: flex;
@@ -45,7 +46,7 @@ const Navbar = () => {
       >
         <Logo src='/logo.png' alt='' />
         <MainHeading>
-          <span>Code</span> Deck
+          <span>My</span> Code
         </MainHeading>
       </NavbarContent>
     </NavbarContainer>

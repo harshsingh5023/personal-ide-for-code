@@ -5,6 +5,7 @@ import { BiEditAlt } from "react-icons/bi";
 import { ModalContext } from "../../context/ModalContext";
 import { PlaygroundContext } from "../../context/PlaygroundContext";
 import { useNavigate } from "react-router-dom";
+import { ModeProps, ThemeContext } from "../../context/ThemeContext";
 
 interface HeaderProps {
   readonly variant: string;
@@ -14,13 +15,16 @@ interface HeadingProps {
   readonly size: string;
 }
 
-const StyledRightPane = styled.div`
+const StyledRightPane = styled.div<ModeProps>`
   padding: 2rem;
-  background: #fafafa;
+  background: ${(props) => props.mode === "Light" ? "#fafafa" : "#313131"} ;
+  color: ${(props) => props.mode === "Light" ?  "Black" : "#fafafa"} ;
   position: absolute;
   right: 0;
   top: 0;
   width: 60%;
+  min-height: 100vh;
+  transition: color 0.5s ease-in;
 `;
 
 const Header = styled.div<HeaderProps>`
@@ -55,6 +59,7 @@ const AddButton = styled.button`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  color: inherit;
   background: transparent;
   outline: 0;
   border: 0;
@@ -66,7 +71,6 @@ const AddButton = styled.button`
     font-weight: 700;
   }
 
-  transition: all 0.25s ease;
   &:hover {
     opacity: 0.75;
   }
@@ -126,6 +130,9 @@ const FolderButtons = styled.div`
 `;
 
 const RightPane = () => {
+
+  const {darkMode} = useContext(ThemeContext)!;
+ 
   // initialize useNavigate
   const navigate = useNavigate();
 
@@ -138,7 +145,7 @@ const RightPane = () => {
   const { deleteFolder, deleteCard } = PlaygroundFeatures;
 
   return (
-    <StyledRightPane>
+    <StyledRightPane mode={darkMode ? "Dark" : "Light"}>
       <Header variant='main'>
         <Heading size='large'>
           My <span>Playgrounds</span>
@@ -161,7 +168,7 @@ const RightPane = () => {
 
       {Object.entries(Folders).map(
         ([folderId, folder]: [folderId: string, folder: any]) => (
-          <Folder key={folderId}>
+          <Folder key={Math.floor(Math.random()*100000000)}>
             <Header variant='folder'>
               <Heading size='small'>{folder.title}</Heading>
               <FolderButtons>
@@ -205,7 +212,7 @@ const RightPane = () => {
             <CardContainer>
               {Object.entries(folder.items).map(
                 ([cardId, card]: [cardId: string, card: any]) => (
-                  <PlaygroundCard key={cardId}
+                  <PlaygroundCard key={Math.floor(Math.random()*10000000)}
                     onClick={() => {
                       // navigate to playground page
                       navigate(`/code/${folderId}/${cardId}`);
