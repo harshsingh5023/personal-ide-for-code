@@ -30,6 +30,7 @@ const DarkLightContainer = styled.div<ModeProps>`
   &:hover {
     opacity: 0.8;
   }
+
 `;
 
 const DarkLightMode = () => {
@@ -46,10 +47,12 @@ const DarkLightMode = () => {
       <img
         src={
           darkMode
-            ? "../images/icons8-sun.gif"
-            : "../images/icons8-moon.gif"
+            ? "/sun.svg"
+            : "/moon.svg"
         }
-        alt=""
+        alt="no image found"
+        height={60}
+        width={60}
       />
     </DarkLightContainer>
   );
