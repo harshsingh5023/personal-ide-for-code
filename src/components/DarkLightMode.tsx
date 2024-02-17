@@ -46,8 +46,8 @@ const DarkLightMode = () => {
       <img
         src={
           darkMode
-            ? "https://www.uplooder.net/img/image/2/addf703a24a12d030968858e0879b11e/sun.svg"
-            : "https://www.uplooder.net/img/image/55/7aa9993fc291bc170abea048589896cf/sun.svg"
+            ? "../images/icons8-sun.gif"
+            : "../images/icons8-moon.gif"
         }
         alt=""
       />
