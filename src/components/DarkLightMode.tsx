@@ -44,7 +44,6 @@ const DarkLightMode = () => {
       onClick={handleDarkMode}
       mode={darkMode ? "Dark" : "Light"}
     >
-      // adding test coment
       <img
         src={
           darkMode
